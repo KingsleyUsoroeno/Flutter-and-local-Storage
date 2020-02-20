@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_management/data_repository.dart';
 import 'package:flutter_state_management/src/db/database_helpers.dart';
 import 'package:flutter_state_management/src/models/word.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_state_management/src/word_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   static const String id = 'account_screen';
+
+  @override
+  State<StatefulWidget> createState() {
+    return AccountScreenState();
+  }
+}
+
+class AccountScreenState extends State<AccountScreen> {
+  List<Word> allWords;
+
+  @override
+  void initState() {
+    super.initState();
+    getAllWordsFromDb();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,47 +28,8 @@ class AccountScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Account Details'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-                'Name: ${Provider.of<DataRepository>(context).data['name'].toString()}'),
-            Text(
-                'Email: ${Provider.of<DataRepository>(context).data['email'].toString()}'),
-            Text(
-                'Age: ${Provider.of<DataRepository>(context).data['age'].toString()}'),
-            SizedBox(
-              height: 30.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    child: Text('Read'),
-                    onPressed: () {
-                      //readDataFromPreferences();
-                      //readWordFromDb();
-                      getAllWordsFromDb();
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    child: Text('Save'),
-                    onPressed: () {
-                      //saveDataToPreferences();
-                      saveWordToDB();
-                    },
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+      body: WordList(
+        words: allWords,
       ),
     );
   }
@@ -100,9 +75,12 @@ class AccountScreen extends StatelessWidget {
   getAllWordsFromDb() async {
     print("Getting All words from Db");
     DatabaseHelper helper = DatabaseHelper.instance;
-    List<Word> allWords = await helper.getAllWords();
-    if(allWords.isNotEmpty){
+    allWords = await helper.getAllWords();
+    print("allwords size is ${allWords.length}");
+    if (allWords.isNotEmpty) {
       print("All words from our Db is $allWords");
+      return allWords;
     }
+//    return helper.getAllWords();
   }
 }

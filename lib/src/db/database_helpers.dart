@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_state_management/src/models/word.dart';
 import 'package:flutter_state_management/src/utils/constants.dart';
 import 'package:path/path.dart';
@@ -7,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 // singleton class to manage the database
-class DatabaseHelper {
+class DatabaseHelper extends ChangeNotifier {
   // This is the actual database filename that is saved in the docs directory.
   static final _databaseName = "MyDatabase.db";
 
