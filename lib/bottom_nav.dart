@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_management/data_repository.dart';
-import 'package:flutter_state_management/screens/account.dart';
-import 'package:flutter_state_management/screens/settings.dart';
+import 'package:flutter_state_management/src/screens/account.dart';
+import 'package:flutter_state_management/src/screens/settings.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigationScreen extends StatelessWidget {

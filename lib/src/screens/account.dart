@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_management/data_repository.dart';
 import 'package:flutter_state_management/src/db/database_helpers.dart';
+import 'package:flutter_state_management/src/models/word.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../data_repository.dart';
 
 class AccountScreen extends StatelessWidget {
   static const String id = 'account_screen';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_management/bottom_nav.dart';
+import 'package:flutter_state_management/data_repository.dart';
 import 'package:provider/provider.dart';
-
-import '../data_repository.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const String id = "SettingsScreen";
