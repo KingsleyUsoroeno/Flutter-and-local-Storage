@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_management/src/db/database_helpers.dart';
 import 'package:flutter_state_management/src/models/word.dart';
+import 'package:provider/provider.dart';
+
+import '../../data_repository.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const String id = "SettingsScreen";
@@ -10,9 +12,10 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DataRepository _dataRepository = Provider.of<DataRepository>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Account Details'),
+        title: Text('Add Note'),
       ),
       body: Center(
         child: Container(
@@ -51,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   FlatButton(
                     onPressed: () {
-                      saveWord();
+                      saveWord(_dataRepository);
                     },
                     child: Text('Submit'),
                     color: Colors.blue,
@@ -65,8 +68,7 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-
-  saveWord() {
+  saveWord(DataRepository repository) {
     print('Saving Word!!!');
     if(formKey.currentState.validate()){
       // validating input
@@ -78,15 +80,7 @@ class SettingsScreen extends StatelessWidget {
       word.word = title;
       word.description = description;
       word.frequency = frequency;
-      saveWordToDB(word);
+      repository.saveWordToDB(word);
     }
-  }
-
-  saveWordToDB(Word word) async {
-    print("Saving Word to Db");
-    DatabaseHelper helper = DatabaseHelper.instance;
-    int rowId = await helper.insertWord(word);
-    print("inserted row id is $rowId");
-    print("word inserted successfully");
   }
 }

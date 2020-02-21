@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_state_management/src/models/word.dart';
 import 'package:flutter_state_management/src/utils/constants.dart';
 import 'package:path/path.dart';
@@ -8,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 // singleton class to manage the database
-class DatabaseHelper extends ChangeNotifier {
+class DatabaseHelper {
   // This is the actual database filename that is saved in the docs directory.
   static final _databaseName = "MyDatabase.db";
 
@@ -47,7 +46,7 @@ class DatabaseHelper extends ChangeNotifier {
     String columnFrequency = Constant.columnFrequency;
 
     await db.execute('''
-              CREATE TABLE $Constant() (
+              CREATE TABLE ${Constant.tableName} (
                 $columnId INTEGER PRIMARY KEY,
                 $columnWord TEXT NOT NULL,
                 $columnDescription TEXT NOT NULL,
@@ -97,20 +96,20 @@ class DatabaseHelper extends ChangeNotifier {
     // Update the given word.
     // The Where clause ensures that // Ensure that the Dog has a matching id.
     await db.update(Constant.tableName, word.toMap(),
-        where: "id = ?", whereArgs: [word.id]);
+        where: "${Constant.columnId} = ?", whereArgs: [word.id]);
   }
 
-  Future<void> deleteWord(int id) async {
+  Future<void> deleteWord(Word word) async {
     // Get a reference to the database.
     final db = await database;
 
-    // Remove the Dog from the Database.
+    // Remove the Word from the Database.
     await db.delete(
       Constant.tableName,
       // Use a `where` clause to delete a specific word.
-      where: "id = ?",
+      where: "${Constant.columnId} = ?",
       // Pass the Dog's id as a whereArg to prevent SQL injection.
-      whereArgs: [id],
+      whereArgs: [word.id],
     );
   }
 }
