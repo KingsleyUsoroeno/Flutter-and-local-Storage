@@ -45,8 +45,7 @@ class DataRepository extends ChangeNotifier {
 
   saveWordToDB(Word word) async {
     print("Saving Word to Db");
-    DatabaseHelper helper = DatabaseHelper.instance;
-    int rowId = await helper.insertWord(word);
+    int rowId = await _databaseHelper.insertWord(word);
     print("inserted row id is $rowId");
     showToast("word inserted successfully", Colors.green);
     notifyListeners();
@@ -60,8 +59,7 @@ class DataRepository extends ChangeNotifier {
   }
 
   getWordById(int rowId) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    Word word = await helper.queryWord(rowId);
+    Word word = await _databaseHelper.queryWord(rowId);
     if (word == null) {
       print('read row $rowId: empty');
     } else {
@@ -71,8 +69,8 @@ class DataRepository extends ChangeNotifier {
 
   Future<List<Word>> getAllWordsFromDb() async {
     print("Getting All words from Db");
-    DatabaseHelper helper = DatabaseHelper.instance;
-    List<Word> allWords = await helper.getAllWords();
+    List<Word> allWords = await _databaseHelper.getAllWords();
+    //notifyListeners();
     print("allwords size is ${allWords.length}");
     if (allWords.isNotEmpty) {
       print("All words from our Db is $allWords");
@@ -80,6 +78,14 @@ class DataRepository extends ChangeNotifier {
     } else {
       return [];
     }
+  }
+
+  Future<void> updateWord(int wordId, Word word) async {
+    print('updating word');
+    if (wordId == null) return;
+    _databaseHelper.updateWord(wordId, word);
+    showToast("Word updated successfully", Colors.green);
+    notifyListeners();
   }
 
   showToast(String msg, Color color) {

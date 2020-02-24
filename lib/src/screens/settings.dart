@@ -8,7 +8,7 @@ class SettingsScreen extends StatelessWidget {
   static const String id = "SettingsScreen";
 
   final formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> formData = {"word": "", "description": "", "frequency": 0};
+  final Map<String, dynamic> _formData = {"word": "", "description": "", "frequency": 0};
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,14 @@ class SettingsScreen extends StatelessWidget {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Word Title'),
-                    onSaved: (input) => formData['word'] = input,
+                      onSaved: (input) => _formData['word'] = input,
                     validator: (String title){
                       return title.isEmpty ? "Title Cannot be Empty" : null;
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Word Description'),
-                    onSaved: (input) => formData['description'] = input,
+                      onSaved: (input) => _formData['description'] = input,
                     keyboardType: TextInputType.text,
                     validator: (String description){
                       return description.isEmpty || description.length < 10 ? "Description cannot be empty or description is too short" : null;
@@ -46,7 +46,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Frequency'),
-                    onSaved: (input) => formData['frequency'] = int.parse(input),
+                      onSaved: (input) => _formData['frequency'] = int.parse(input),
                     keyboardType: TextInputType.number,
                     validator: (String frequency){
                       return frequency.isEmpty ? "Frequency Cannot be Empty" : null;
@@ -73,13 +73,12 @@ class SettingsScreen extends StatelessWidget {
     if(formKey.currentState.validate()){
       // validating input
       formKey.currentState.save();
-      String title = formData['word'];
-      String description = formData['description'];
-      int frequency = formData['frequency'];
-      Word word = Word();
-      word.word = title;
-      word.description = description;
-      word.frequency = frequency;
+      String title = _formData['word'];
+      String description = _formData['description'];
+      int frequency = _formData['frequency'];
+      Word word = Word(
+              word: title, description: description, frequency: frequency
+      );
       repository.saveWordToDB(word);
     }
   }

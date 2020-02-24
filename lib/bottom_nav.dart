@@ -13,13 +13,18 @@ class BottomNavigationScreen extends StatelessWidget {
     return Scaffold(
       body: _children[_dataRepository.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        onTap: ((int index) => _dataRepository.setCurrentIndex(index)),
-        currentIndex: _dataRepository.currentIndex,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('Settings')),
-        ],
+          type: BottomNavigationBarType.shifting,
+          selectedItemColor: Theme
+                  .of(context)
+                  .primaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: ((int index) => _dataRepository.setCurrentIndex(index)),
+          currentIndex: _dataRepository.currentIndex,
+          items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+              BottomNavigationBarItem(
+                      icon: Icon(Icons.settings), title: Text('Settings')),
+          ],
       ),
     );
   }

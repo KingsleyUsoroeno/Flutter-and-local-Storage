@@ -67,7 +67,12 @@ class DatabaseHelper {
     print("quering words based on id from DB");
     Database db = await database;
     List<Map> maps = await db.query(Constant.tableName,
-        columns: [Constant.columnId, Constant.columnWord, Constant.columnDescription, Constant.columnFrequency],
+            columns: [
+                Constant.columnId,
+                Constant.columnWord,
+                Constant.columnDescription,
+                Constant.columnFrequency
+            ],
         where: '${Constant.columnId} = ?',
         whereArgs: [id]);
     if (maps.isNotEmpty) {
@@ -89,14 +94,14 @@ class DatabaseHelper {
     });
   }
 
-  Future<void> updateWord(Word word) async {
+  Future<void> updateWord(int wordId, Word word) async {
     print("Updating a word in our Database");
     // Get a reference to the database.
     Database db = await database;
     // Update the given word.
     // The Where clause ensures that // Ensure that the Dog has a matching id.
     await db.update(Constant.tableName, word.toMap(),
-        where: "${Constant.columnId} = ?", whereArgs: [word.id]);
+            where: "${Constant.columnId} = ?", whereArgs: [wordId]);
   }
 
   Future<void> deleteWord(Word word) async {
